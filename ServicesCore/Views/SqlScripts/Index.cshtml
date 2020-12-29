@@ -1,0 +1,223 @@
+﻿@using HitServicesCore.Models.SharedModels;
+@using DevExtreme.AspNet.Mvc;
+@using HitServicesCore.Models.SharedModels;
+@using HitServicesCore.Models.Helpers;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/ExportData/ExportData.js"></script>
+<script src="~/js/SQLScripts/SQLScript.js"></script>
+<link rel="stylesheet" href="~/css/Plugins/Plugins.css">
+<link rel="stylesheet" href="~/css/Services/services.css" />
+<link rel="stylesheet" href="~/css/Configuration/configuration.css" />
+<link rel="stylesheet" href="~/css/InitDB/initdb.css" />
+<link rel="stylesheet" href="~/css/ExportData/exportdata.css" />
+<div class="b1psb">
+    <div class="custom-flex-column custom-flex-100 header">
+        <h1 class="tac">SQL Scripts</h1>
+
+        <label style="display:none" data-bind="value:SqlScriptViewModel.serviceId()"></label>
+        <div class="flex-container" style="margin-top: 25px;background: none;">
+            <div class="flex-item flex-basis-40">
+                <label for="scripts">Choose an Sql Service :</label>
+                <select name="scripts" style="width:300px;" id="SqlScripts" onchange="selectCurrentScript(this)">
+                </select>
+                &nbsp;
+                <button style="        border: 1px solid black;background: #00468b;color: white;height: 50px;width: 100px;" onclick="updateFile()">Update</button>
+            </div>
+            <div class="flex-item" style="        flex-basis:75%;">
+                <div class="flex-item flex-basis-35">
+                    <label>Create a new File</label>
+                    &nbsp;
+                    <button style="        background: green;width: 50px;border-radius: 15px;height: 35px;" onclick="showNewFileText()">+</button>
+                    &nbsp;&nbsp;
+                    <input type="text" id="newfiletext" style="visibility: hidden;width: 400px;" value="" />
+                    <button style="        background: #00468b;color: white;height: 50px;width: 100px;" onclick="saveNewFile()">Save</button>
+                </div>
+
+            </div>
+        </div>
+
+        <section id="wrapper" style="margin-top: -30px;z-index:0;">
+
+            <div class="content">
+                <!-- Tab links -->
+
+                <div class="tabs">
+                    <button class="tablinks active" data-country="General" style="cursor:pointer"><p data-title="General">General</p></button>
+                    <button class="tablinks" data-country="DBs"><p data-title="DBs">DBs</p></button>
+                    <button class="tablinks" data-country="SQLScript"><p data-title="SQLScript">SQL Script</p></button>
+                    <button class="tablinks" data-country="SQLParameters"><p data-title="SQLParameters">SQL Parameters</p></button>
+                    <button class="tablinks" data-country="SendEmail"><p data-title="SendEmail">Send Email</p></button>
+                </div>
+
+                <!-- Tab content -->
+                <div class="wrapper_tabcontent">
+                    <div id="General" class="tabcontent active">
+                        <h3>General</h3>
+
+                        <div class="flex-container">
+                            <div class="flex-item " style="        flex-basis: 100%;
+        height: 425px;
+">
+                                <h1 style="color:black;font-weight:bolder">Description</h1>
+                                <div id="classdescription" rows="17" cols="100" style="margin: 0px; height: 300px; width: 772px;" readonly>
+                                    <h4><strong>Jod that cals 'Run Script' Service. </strong></h4>
+                                    <h5>Service runs a script <em>(inserts/updates/deletes)</em> to a DB.</h5>
+                                    <h5>The related SQL Script must perform an action to DB and  <br />optionally return
+                                    a Data Set with the updated values for the sql parameters.</h5>
+                                    <h5 style="color: #002868;font-weight:bold">EXAMPLE(No sql parameters return):</h5>
+                                    <h5> <span style="color:darkred">Update </span> EndOfDay_Hist set Barcodes = 0 where Barcodes is null .</h5>
+                                    <h5 style="color: #002868; font-weight: bold">EXAMPLE (1 Data Set return):</h5>
+                                    <h5>
+                                        &nbsp; IF object_id('tempdb..#TempTable') is not null
+                                        <span style="color:darkred"> Drop table  </span>#TempTable
+                                        <span style="color:darkgreen">
+                                            <br />
+                                            Select
+                                        </span> id INTO #TempTable<br />
+                                                                  <span style="color:darkgreen">From EndOfDay_Hist  </span>where Id &gt;@@Id .&nbsp;
+                                    </h5> 
+                                    <h5>
+                                        <span style="color:darkred">
+                                            update
+                                        </span>  EndOfDay_Hist set Barcodes=0  <br />
+                                        where Barcodes is null and id &gt;@@Id-- &lt; --action to perform&nbsp;
+                                    </h5>
+                                    <h5> <span style="color:darkgreen">Select  </span> max(Id) as Id <br /> <span style="color:darkgreen"> From #TempTable </span> -- &lt;-- 1st Data Set (Updated sql parameters)&nbsp;</h5>
+                                    <h5>  <span style="color:darkred">drop table #TempTable&nbsp; </span> <br /> In the example above the Data Set contains the updated value 'Id' for the SQLParameter @@Id(see SQL Script section)"</h5>
+                                </div>
+                            </div>
+                        </div>
+                 <br />
+                        <div class="flex-container">
+                            <div class="flex-item " style="flex-basis:100%">
+                                <label style="color:black;">serviceVersion : &nbsp;</label>
+                                <label data-bind="text:SqlScriptViewModel.serviceVersion()" id="serviceVersion"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="DBs" class="tabcontent">
+                        <h3>DBs</h3>
+                        <div class="flex-container">
+                            <div class="flex-item " style="flex-basis:100%">
+                                <label style="color:black;">Custom DB1</label>
+                                <input type="password" id="db1" style="width: 32vw;" data-bind="value:SqlScriptViewModel.custom1DB()" />
+                                <i class="fas fa-eye" style="color:green;cursor:pointer;" onclick="ShowHideDb()"></i>
+                            </div>
+                        </div>
+
+                        <div class="flex-container">
+                            <div class="flex-item " style="flex-basis:100%">
+                                <label style="color:black;">Timeout in Sec</label>
+                                <input type="text" id="timeout" style="width: 10vw;" data-bind="value:SqlScriptViewModel.dbTimeout()" />
+                                <select name="db" id="DB" onchange="selectCurrentDB(this)">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="60">60</option>
+                                    <option value="90">90</option>
+                                    <option value="120">120</option>
+                                    <option value="150">150</option>
+                                    <option value="180">180</option>
+                                    <option value="250">250</option>
+                                    <option value="300">300</option>
+                                    <option value="420">420</option>
+                                    <option value="600">600</option>
+                                    <option value="1200">1200</option>
+                                    <option value="2000">2000</option>
+                                    <option value="5000">5000</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="SQLScript" class="tabcontent">
+                        <h3>SQL Script</h3>
+                        <div class="flex-container">
+                            <div class="flex-item " style="flex-basis:100%">
+                                <textarea  style="position:sticky;" id="scriptbody" rows="22" cols="100" data-bind="value:SqlScriptViewModel.sqlScript()"  draggable="false">
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="SQLParameters" class="tabcontent">
+                        <h3>SQL Parameters</h3>
+                        <div class="flex-container">
+                            <div class="flex-item " style="flex-basis:100%">
+                                <h3>Dynamic Add/delete row</h3>
+                                <div class="col-md-10" style="margin-left: -15px">
+                                    <div class="table-responsive">
+                                        <table id="test-table" class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Key</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="test-body">
+                                                <tr id="row0">
+                                                    <td>
+                                                        <input name='from_value0' type='text' class='form-control sqlparamskey' />
+                                                    </td>
+                                                    <td>
+                                                        <input name='to_value0' type='text' class='form-control input-md sqlparamsvalue' />
+                                                    </td>
+                                                    <td>
+                                                        <input class='delete-row btn btn-primary' type='button' value='Delete' />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <input id='add-row' class='btn btn-primary' type='button' value='Add' />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="SendEmail" class="tabcontent">
+                        <h3>Send Email</h3>
+                        
+                            <div class="flex-container">
+                                <div class="flex-item " style="flex-basis:100%">
+                                    <label style="color:black;margin-left:125px;">sendEmailTo</label>
+                                    &nbsp;
+                                    <input type="text" id="sendEmailTo" name="sendEmailTo" data-bind="value:SqlScriptViewModel.sendEmailTo()">
+                                </div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="flex-item " style="flex-basis:100%">
+                                    <label style="color:black;">sendEmailOnSuccess</label>
+                                    &nbsp;
+                                    <!-- ko if: SqlScriptViewModel.sendEmailOnSuccess()==true-->
+                                    <input type="checkbox" id="sendEmailOnSuccess" name="sendEmailOnSuccess" data-bind="value:SqlScriptViewModel.sendEmailOnSuccess()" checked>
+                                    <!-- /ko -->
+                                    <!-- ko if: SqlScriptViewModel.sendEmailOnSuccess()==false-->
+                                    <input type="checkbox" id="sendEmailOnSuccess" name="sendEmailOnSuccess" data-bind="value:SqlScriptViewModel.sendEmailOnSuccess()">
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                            <div class="flex-container">
+                                <div class="flex-item " style="flex-basis:100%">
+                                    <label style="color:black;">sendEmailOnFailure</label>
+                                    &nbsp;
+                                    <!-- ko if: SqlScriptViewModel.sendEmailOnFailure()==true-->
+                                    <input type="checkbox" id="sendEmailOnFailure" name="sendEmailOnFailure" data-bind="value:SqlScriptViewModel.sendEmailOnFailure()" checked>
+                                    <!-- /ko -->
+                                    <!-- ko if: SqlScriptViewModel.sendEmailOnFailure()==false-->
+                                    <input type="checkbox" id="sendEmailOnFailure" name="sendEmailOnFailure" data-bind="value:SqlScriptViewModel.sendEmailOnFailure()">
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+   
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<script>
+    var SqlScriptViewModel = new SqlScriptViewModel();
+</script>

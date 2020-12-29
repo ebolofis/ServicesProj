@@ -1,0 +1,65 @@
+﻿@using HitServicesCore.Models.SharedModels;
+@using HitHelpersNetCore.Models;
+@using  HitServicesCore.Helpers;
+@inject InitializerHelper ihelper;
+ 
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<PlugInDescriptors> plugins = ViewBag.plugins;
+}
+@using DevExtreme.AspNet.Mvc;
+<script src="~/js/InitDB/initDB.js"></script>
+<link rel="stylesheet" href="~/css/Plugins/Plugins.css">
+<link rel="stylesheet" href="~/css/Services/services.css" />
+<link rel="stylesheet" href="~/css/Configuration/configuration.css" />
+<link rel="stylesheet" href="~/css/InitDB/initdb.css" />
+<div class="b1psb">
+    <div class="custom-flex-column custom-flex-100 header">
+        <h1 class="tac">Initialize DB</h1>
+        @if (ViewBag.error != "Sucess") { 
+            <span style="color:red; font-size:17px;text-align:center"> @ViewBag.error</span>
+        }
+        else
+        {
+            <span style="color:lightgreen; font-size:20px;text-align:center"> @ViewBag.error</span>
+        }
+        <div class="custom-flex-100 custom-flex-center mt44">
+            <table class="table-fill">
+                <thead>
+                    <tr>
+                        <th class=" thstyle text-left cellwidth">Name</th>
+                        <th class=" thstyle text-left cellwidth">Current Version</th>
+                        <th class=" thstyle text-left cellwidth">Updated On</th>
+                        <th class=" thstyle text-left cellwidth">DB Version</th>
+                        <th class=" thstyle tac cellwidth"> </th>
+                    </tr>
+                </thead>
+                <tbody class="table-hover">
+                    @foreach (PlugInDescriptors plugin in ihelper.plugins)
+                    {
+                        <tr>
+                            <td class="text-left  cellwidth">
+                                <label>@Html.Raw(plugin.mainDescriptor.plugIn_Name)</label>
+                            </td>
+
+                            <td class="text-left  cellwidth tac">
+                                <label>@Html.Raw(plugin.initialerDescriptor.latestUpdate)</label>
+                            </td>
+
+                            <td class="text-left  cellwidth tac">
+                                <label>@Html.Raw(plugin.initialerDescriptor.latestUpdateDate.ToString("dd/yyyy"))</label>
+                            </td>
+                            <td class=" cellwidth tac">
+                                <label>@Html.Raw(plugin.initialerDescriptor.dbVersion)</label>
+                            </td>
+                            <td class="tac" style="height:75px">
+                                <button onclick="initDB(this.id)" id="@plugin.mainDescriptor.plugIn_Id" class="ss btnstyle yellow learn-more tac">Initialize</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                @Html.Raw("</table>")
+        </div>
+    </div>
+</div>
+

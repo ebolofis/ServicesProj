@@ -1,0 +1,368 @@
+﻿@using DevExtreme.AspNet.Mvc;
+@using HitServicesCore.Models;
+@using HitServicesCore.Models.SharedModels;
+@using HitServicesCore.Models.Helpers;
+@using System.Text.Json;
+@using System.Collections.Generic;
+@using HitHelpersNetCore.Models;
+@using HitHelpersNetCore.Helpers;
+@using HitHelpersNetCore.Models.PmsDBModels;
+@inject HitPosDBsHelper hitposDBhelper
+@inject ProtelDBsHelper protelDBhelper
+@inject WebPosDBsHelper webposDBhelper
+@inject ProtelHelper protelhelper
+@*@inject ErmisDBsHelper ermisdbs;*@
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<MainDescriptorWithAssemplyModel> mainDesc = ViewBag.plgs;
+    MainConfigurationModel model = new MainConfigurationModel();
+    model = ViewBag.MyModel;
+    string currentUrl = ($"{@Context.Request.Scheme}://{@Context.Request.Host}/");
+    Dictionary<string, dynamic> values = ViewBag.values;
+    List<string> keys = ViewBag.keys; string listkeys = ""; string listofprotels = ""; string listofprotelhotels = "";
+    System.Collections.Generic.List<KeyValuePair<string, dynamic>> dbs = ViewBag.dblist;
+    Dictionary<string, DBModel> webposdbs = webposDBhelper.GetWebPosDBs();
+    Dictionary<string, DBModel> proteldbs = protelDBhelper.GetProtelDBs();
+    Dictionary<string, DBModel> hitposdb = hitposDBhelper.GetHitPosDBs();
+    Dictionary<string, ProtelHotelsModel> protelhotellist = protelhelper.GetProtelHotels();
+   //ictionary<string, DBModel> ermislist = ermisdbs.GetErmisDBs();
+    if (mainDesc == null)
+        mainDesc = new List<MainDescriptorWithAssemplyModel>();
+
+    if (protelhotellist != null)
+        foreach (KeyValuePair<string, ProtelHotelsModel> prhmd in protelhotellist)
+            listofprotelhotels +=   prhmd.Key + ">" + prhmd.Value.Name   + "#";
+
+    if (protelhotellist != null)
+        foreach (KeyValuePair<string, DBModel> prdb in proteldbs)
+            listofprotels += prdb.Key + "#";
+
+    if (keys != null)
+        foreach (string s in keys)
+            listkeys += s + ",";
+}
+
+<link rel="stylesheet" href="~/css/Configuration/configuration.css" />
+<link rel="stylesheet" href="~/css/Plugins/Plugins.css">
+<div class="b1psb">
+    <div class="custom-flex-row custom-flex-100 divstyle">
+        <div class="custom-flex-100 custom-flex-center">
+            <h1> Main Configuration</h1>
+        </div>
+    </div>
+    <div class="custom-flex-row">
+        <div class="custom-flex-100 mt20">
+            <h1 style="margin-top:10px;" class="mt5">&nbsp; Please select a plugin &nbsp;</h1>
+            <div class="select" id="selectBox">
+                @Html.Raw("<select  id=\"selected\" style=\"color:white\"; onchange=\"selectedPlugin()\" > ");
+                <option selected="selected" value="-1" disabled> Selected :  @ViewBag.plugInname </option>
+                <option onchange="selectedPlugin()" onclick="selectedPlugin()" value="{00000000-0000-0000-0000-000000000000}">Main Configuration </option>
+                @foreach (PlugInDescriptors x in ViewBag.plugins)
+                {
+                    @Html.Raw("<option onchange=\"selectedPlugin()\" onclick=\"selectedPlugin()\"  value = " + x.mainDescriptor.plugIn_Id + ">" + x.mainDescriptor.plugIn_Name + "</option")
+                    <br />
+                }
+                @Html.Raw("</select>")
+            </div>
+        </div>
+        <div onclick="getValuesOfPlugin()" class="block custom-flex-50"><br><button style="border: 2px solid  black;" class="button success"> Save &nbsp;<i class="fas fa-save"></i></button></div>
+    </div>
+    @if (ViewBag.plugInId != null)
+    {
+<tbody class="table-hover">
+    @foreach (KeyValuePair<string, System.Collections.Generic.List<HitHelpersNetCore.Models.DescriptorsModel>> item in model.descriptors.descriptions)
+    {
+        <button class="accordion"><i class="bt1pxsw fas fa-angle-down"></i> &nbsp;  @Html.Label(item.Key, item.Key, new { @style = "cursor:pointer !important;" })</button>
+        <div class="panel">
+            <table class="table-fill">
+                <thead>
+                    <tr>
+                        <th class="cellwidth">Property</th>
+                        <th class="cellwidth">Description</th>
+                        <th class="cellwidth">Value</th>
+                        <th class="cellwidth">Version</th>
+                    </tr>
+                </thead>
+                <tbody class="table-hover">
+                    @foreach (HitHelpersNetCore.Models.DescriptorsModel mod in item.Value)
+                    {
+                        <tr>
+                            <td class="text-left cellwidth">
+                                <label class="ml5">@Html.Raw(mod.Key)</label>
+                            </td>
+                            <td class="text-left  cellwidth" style="width:500px !important;">
+                                <label>@Html.Raw(mod.Description)</label>
+                            </td>
+                            <td class="text-left cellwidth tac">
+                                @foreach (KeyValuePair<string, dynamic> val in values)
+                                {
+                                    if (val.Key == mod.Key)
+                                    {
+                                        switch (mod.Type)
+                                        {
+                                            case "customdb":
+                                                <div class="resp-textbox custom-flex-100">
+                                                    <div class="select">
+                                                        @Html.Raw("<select  id=\"sDB\" style=\"color:white\"  onchange=\"selectedDb()\"  name=" + val.Key + "> ")
+                                                        <option selected="selected" disabled value="-1"> Available Databases </option>
+                                                        <optgroup label="WebPos">
+                                                            @foreach (KeyValuePair<string, DBModel> pdb in webposdbs)
+                                                                @Html.Raw("<option onchange=\"selectedDb(this.id)\"  onclick=\"selectedDb(this.id)\" value = "+ pdb.Value.Server +"#" + pdb.Value.Db +"#" + pdb.Value.User +"#" +pdb.Value.Password +">" + pdb.Value.DBId + "</option>")
+                                                        </optgroup>
+                                                        <optgroup label="Protel">
+                                                            @foreach (KeyValuePair<string, DBModel> prdb in proteldbs)
+                                                                @Html.Raw("<option onchange=\"selectedDb(this.id)\"  onclick=\"selectedDb(this.id)\" value = " + prdb.Value.Server + "#" + prdb.Value.Db + "#" + prdb.Value.User + "#" + prdb.Value.Password + ">" + prdb.Value.DBId + "</option>")
+                                                        </optgroup>
+                                                        <optgroup label="HitPos">
+                                                            @foreach (KeyValuePair<string, DBModel> hpdb in hitposdb)
+                                                                @Html.Raw("<option onchange=\"selectedDb(this.id)\"  onclick=\"selectedDb(this.id)\" value = " + hpdb.Value.Server + "#" + hpdb.Value.Db + "#" + hpdb.Value.User + "#" + hpdb.Value.Password + ">" + hpdb.Value.DBId + "</option>")
+                                                        </optgroup>
+                                                        @Html.Raw("</select>")
+                                                    </div>
+                                                    @if (mod.IsHidden == "true")
+                                                    {
+                                                        <div class="custom-flex-row custom-flex-100">
+                                                            <input style="width: inherit;height: unset;" class="values cb start custom-flex-100  @val.Key" type="password" id="@val.Key" name="txtName" value="@val.Value" />
+                                                            <div> &nbsp;</div>
+                                                            <div id="@val.Key" onclick="showPass(this.id)"><i style="cursor:pointer;color: #4CAF50;" class="fas fa-eye"></i></div>
+                                                            <i class="fas fa-database" style="cursor:pointer;color:gray;" id="@val.Key" onclick="checkConnection(this.id)"></i>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="custom-flex-row custom-flex-100">
+                                                            <input class="values cb start @val.Key custom-flex-100" type="text" id="@val.Key" name="txtName" value="@val.Value" />
+                                                            &nbsp;
+                                                            <i class="fas fa-database @val.Key" style="cursor:pointer;color:gray;" id="@val.Key" onclick="checkConnection(this.id)"></i>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                break;
+                                            case "bool":
+                                                <input class="values" checked="@val.Value" type="checkbox" id="@val.Key" name="txtName" value="@val.Value" />
+                                                break;
+                                            case "maindb":
+                                                <div class="resp-textbox custom-flex-100">
+                                                    @if (mod.IsHidden == "true")
+                                                    {
+                                                        <input style="width: inherit;position: sticky;" class="values cb custom-flex-100" type="password" id="@val.Key" name="txtName" value="@val.Value" />
+                                                        <div> &nbsp;</div>
+                                                        <div id="@val.Key" onclick="showPass(this.id)"><i style="cursor:pointer;color: #4CAF50;" class="fas fa-eye"></i></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input class="values cb" style="width: inherit;position: sticky;" type="text" id="@val.Key" name="txtName" value="@val.Value" />
+                                                    }
+                                                </div>
+                                                break;
+                                            case "string":
+                                                <div class="resp-textbox custom-flex-100">
+                                                    @if (mod.IsHidden == "true")
+                                                    {
+                                                        <input style="width: inherit;position: sticky;" class="values cb custom-flex-100" type="password" id="@val.Key" name="txtName" value="@val.Value" />
+                                                        <div> &nbsp;</div>
+                                                        <div id="@val.Key" onclick="showPass(this.id)"><i style="cursor:pointer;color: #4CAF50;" class="fas fa-eye"></i></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input class="values cb" style="width: inherit;position: sticky;" type="text" id="@val.Key" name="txtName" value="@val.Value" />
+                                                    }
+                                                </div>
+                                                break;
+                                            case "int":
+                                                <div class="resp-textbox">
+                                                    <input class="values" type="number" id="@val.Key" name="txtName" value="@val.Value" />
+                                                </div>
+                                                break;
+                                            case "datetime":
+                                            <p>
+                                                <input type="datetime" id="@val.Key" class="datestyle values"
+                                                       name="@val.Key" value="@val.Value"
+                                                       min="2019-06-07T00:00" max="2030-06-14T00:00">
+                                            </p>
+                                                break;
+                                            case "decimal":
+                                                <div class="resp-textbox">
+                                                    <input class="values" step=".01" type="number" id="@val.Key" name="txtName" value="@val.Value" />
+                                                </div>
+                                                break;
+                                            case "list,string":
+                                                <div style="flex-direction:row">
+                                                    <div style="position:inherit !important;">
+                                                        <button class="cross br40 @val.Key" value="@val.Key" onclick="addRow(this.value)"> + </button>
+                                                        <button class="min br40" value="@val.Key" onclick="deleteRow(this.value)"> - </button>
+                                                        @Html.Label(val.Key)
+                                                    </div>
+                                                    <div style="position:sticky !important;">
+                                                        <i class="fas fa-database @val.Key custom-flex-100" style="visibility:hidden; cursor:pointer; color:gray;" id="@val.Key" onclick="checkConnection(this.id)"> </i>
+                                                        <span style="visibility: hidden;" class="spaneye" id="@val.Key" onclick="showPass(this.id)"><i style="border-radius: 5px; cursor: pointer;color: #4CAF50;" class="fas fa-eye"></i></span>
+                                                    </div>
+                                                </div>
+
+                                                foreach (string s in val.Value)
+                                                {
+                                                    if (keys.Where(x => x == Convert.ToString(val.Key)).FirstOrDefault() == null)
+                                                        keys.Add(Convert.ToString(val.Key));
+
+                                                    @if (mod.IsHidden == "true")
+                                                    {
+                                                        <div class="custom-flex-row">
+                                                            <input type="password" class="custom-flex-100 form-control values @val.Key" id="@val.Key" value="@s" />
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="custom-flex-row">
+                                                            <input class="form-control custom-flex-100 values @val.Key" id="@val.Key" value="@s" type="text" />
+                                                        </div>
+                                                    }
+                                                }
+                                                break;
+                                            case "list,db":
+                                                <div style="flex-direction:row">
+                                                    <div style="position:inherit !important;">
+                                                        <button class="cross br40 @val.Key" value="@val.Key" onclick="addDbRow(this.value)"> + </button>
+                                                        <button class="min br40" value="@val.Key" onclick="deleteRow(this.value)"> - </button>
+                                                        @Html.Label(val.Key)
+                                                    </div>
+                                                    <div style="position:sticky !important;">
+                                                        <i class="fas fa-database @val.Key custom-flex-100" style="cursor:pointer; color:gray;" id="@val.Key" onclick="checkConnection(this.id)"> </i>
+                                                        <span class="spaneye" id="@val.Key" onclick="showPass(this.id)"><i style="border-radius: 5px; cursor: pointer;color: #4CAF50;" class="fas fa-eye"></i></span>
+                                                    </div>
+                                                </div>
+
+                                                foreach (string s in val.Value)
+                                                {
+                                                    if (keys.Where(x => x == Convert.ToString(val.Key)).FirstOrDefault() == null)
+                                                        keys.Add(Convert.ToString(val.Key));
+
+                                                    @if (mod.IsHidden == "true")
+                                                    {
+                                                        <div class="custom-flex-row">
+                                                            <input type="password" class="custom-flex-100 form-control values @val.Key" id="@val.Key" value="@s" />
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="custom-flex-row">
+                                                            <input class="form-control custom-flex-100 values @val.Key" id="@val.Key" value="@s" type="text" />
+                                                        </div>
+                                                    }
+                                                }
+                                                break;
+                                            case "list,mpehotel":
+                                                <div style="flex-direction:row">
+                                                    <div style="position:inherit !important;">
+                                                        <button class="cross br40 @val.Key" value="@val.Key" onclick="addMpeListRow(this.value, listOfProtels, listOfHotels)"> + </button>
+                                                        <button class="min br40"  onclick="deleteProtelConfigRow()"> - </button>
+                                                        @Html.Label(val.Key)
+                                                    </div>
+                                                    <div style="position:sticky !important;">
+                                                        <i class="fas fa-database @val.Key custom-flex-100" style="visibility:hidden;cursor:pointer; color:gray;" id="@val.Key" onclick="checkConnection(this.id)"> </i>
+                                                        <span style="visibility: hidden;" class="spaneye" id="@val.Key" onclick="showPass(this.id)"><i style="border-radius: 5px; cursor: pointer;color: #4CAF50;" class="fas fa-eye"></i></span>
+                                                    </div>
+                                                </div>
+                                                @foreach (HotelConfigModel hotelconf in val.Value)
+                                                {
+                                                    <div class="resp-textbox custom-flex-100 proteldbsrow">
+                                                        <div class="custom-flex-row custom-flex-100 " style="font-size:14px;font-weight: 900;">@hotelconf.HotelName  </div>
+                                                        <div class="custom-flex-row">
+                                                        
+                                                            <input class="form-control custom-flex-100  hotelconfig " name="@hotelconf.Db>@hotelconf.HotelName" id="@val.Key" value="@hotelconf.Value" type="text" />
+                                                        </div>
+                                                    </div>
+                                                    }
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                }
+                            </td>
+                                <td class="text-left cellwidth" style="text-align: center; width: 100px;">
+                                    @Html.Label(Convert.ToString(mod.ApiVersion), Convert.ToString(mod.ApiVersion), null)
+                                </td>
+                                </tr>
+                            }
+                </tbody>
+                        @Html.Raw("</table>")
+                </div>
+            }
+        </tbody>
+    }
+</div>
+
+<script>
+    var animateButton = function (e) {
+        e.preventDefault;
+        //reset animation
+        e.target.classList.remove('animate');
+        e.target.classList.add('animate');
+        e.target.classList.add('animate');
+        setTimeout(function () {
+            e.target.classList.remove('animate');
+        }, 3000);
+    };
+    var classname = document.getElementsByClassName("button");
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', animateButton, false);
+    }
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () { /* Toggle between adding and removing the "active" class, to highlight the button that controls the panel */
+            this.classList.toggle("active");   /* Toggle between hiding and showing the active panel */
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+    var listOfKeys = "@listkeys";
+    var listOfHotels = "@listofprotelhotels";
+    var listOfProtels = "@listofprotels";
+    function selecteddb(selectedOption) {
+
+        hotels = listOfHotels.split("#");
+        var protelSrv = selectedOption.innerText.trim();
+        var filteredhotels = [];
+        for (const hotelinfo of hotels) {
+            if (hotelinfo.includes(protelSrv))
+                filteredhotels.push(hotelinfo);
+        }
+        var obj = {};
+        var ele = ` <div class="custom-flex-row">
+                             <input class="form-control custom-flex-100  hotelconfig " name="${selectedOption.innerText}" id="${selectedOption.id}" value="" type="text" />
+                                                        </div>
+                                              `;
+
+        var name = protelSrv.split(">");
+        protelsselectbox = document.getElementById("proteldbssubdiv");
+        protelsselectbox.insertAdjacentHTML("afterend", ele);
+        protelsselectbox.style.display = "none";
+        protelsselectbox.insertAdjacentHTML("beforebegin", "  <div class=\"custom-flex-row custom-flex-100 \" style=\"font-size:14px;font-weight: 900;\"> " + name[1] + "  </div>"  );
+     
+    }
+</script>
+<style>
+    td, th {
+        padding: 17px !important;
+    }
+
+    input {
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-radius: 5%;
+        width: 500px !important;
+        position: sticky !important;
+        color: black !important;
+    }
+</style>
+
+
+
+

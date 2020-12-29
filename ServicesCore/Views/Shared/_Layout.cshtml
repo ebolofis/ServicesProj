@@ -1,0 +1,81 @@
+﻿
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="~/css/Drawer/drawer.css">
+    <link rel="stylesheet" href="~/css/Flex.css">
+    <script src="~/js/ScheduledTasks/ScheduledTasks.js"></script>
+    <script src="~/js/Login/login.js"></script>
+    <script src="~/js/Plugins/Plugins.js"></script>
+    <script src="~/js/Configuration/Configuration.js"></script>
+    <script src="~/js/lib/jquery.js"></script>
+    <script src="~/knockout/knockout-latest.min.js"></script>
+    <script src="~/js/JQuery/jquery-ui.js"></script>
+    <link rel="stylesheet" href="~/js/JQuery/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/js/JQuery/jsgrid.min.css" />
+    <link href="~/css/sweet_alert_Izi_Toast/iziToast.min.css" rel="stylesheet" />
+    <script src="~/js/sweet_alert_Izi_Toast/iziToast.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/js/JQuery/jsgrid.min.js"></script>
+    <link href="~/css/devextreme/dx.common.css" rel="stylesheet" />
+    <link href="~/css/devextreme/dx.light.css" rel="stylesheet" />
+    <script src="~/js/devextreme/jquery.js"></script>
+    <script src="~/js/devextreme/dx.all.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+</head>
+
+<div>
+    <div class="pure-container" data-effect="pure-effect-slide">
+        <input type="checkbox" style="visibility:hidden" id="pure-toggle-left" class="pure-toggle" data-toggle="left" />
+
+        <label id="hamburgericon" style="" class="pure-toggle-label" for="pure-toggle-left" data-toggle-label="left"><span class="pure-toggle-icon"></span></label>
+
+        <nav class="pure-drawer" data-position="left">
+            <p style="padding: 50px 20px; margin: 0; "></p>
+            <p class="paragraphstyling" onclick="redirectToPlugins()">Plugins<p />
+            <p class="paragraphstyling" onclick="redirectToConfiguration(1)">Main Configuration<p />
+            <p class="paragraphstyling" onclick="redirectToServices()">Services<p />
+            <p class="paragraphstyling" onclick="redirectToScheduler()">Scheduler<p />
+            <p class="paragraphstyling" onclick="redirectToInitializeDB()">Initialize Database<p />
+            <p class="paragraphstyling" onclick="redirectToSMTPConfiguration()">SMTP Configuration<p />
+            <details style="color:white;cursor:pointer">
+                 <summary>Internal Services</summary>
+                <ul>
+                    <li>   <p class="paragraphstyling" onclick="redirectToExportDataServices()">Export Data Services<p /></li>
+                    <li>  <p class="paragraphstyling" onclick="redirectToReadCsvServices()">Read Csv Services<p /></li>
+                    <li> <p class="paragraphstyling" onclick="redirectToSaveToTableServices()">Save To Table Services<p /></li>
+                    <li>  <p class="paragraphstyling" onclick="redirectToSqlScriptsServices()">Sql Scripts Services<p /></li>
+                </ul>
+            </details>
+         
+          
+           
+          
+            <p class="paragraphstyling" onclick="redirectToLogin()">Logout<p />
+        </nav>
+
+        <label class="pure-overlay" for="pure-toggle-left" data-overlay="left"></label>
+        @RenderBody()
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var ScheduledTasksHandler = new ScheduledTasks();
+    ko.applyBindings();
+</script>
+
+<style>
+    .paragraphstyling {
+        padding: 0px 20px;
+        margin: 0;
+        cursor: pointer !important;
+        color: white !important;
+    }
+</style>
+

@@ -1,0 +1,51 @@
+﻿@using HitServicesCore.Models.SharedModels;
+@using DevExtreme.AspNet.Mvc;
+@using HitServicesCore.Models.SharedModels;
+@using HitServicesCore.Models.Helpers;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Plugins/Plugins.css">
+<div class="b2psb">
+    <div class="custom-flex-row custom-flex-100 plgcss">
+        <div class="custom-flex-50"></div>
+        <div class="custom-flex-50">
+            <h1 style="color:white !important;"> Plugins</h1>
+        </div>
+    </div>
+
+    @(Html.DevExtreme().DataGrid<PluginHelper>
+    ()
+    .ID("gridContainer")
+    .ShowBorders(true)
+    .DataSource(d => d.Mvc()
+    .Controller("FetchDataApi")
+    .LoadAction("GetPlugins")
+    )
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.plugIn_Name).Width(350);
+        columns.AddFor(m => m.plugIn_Description).Width(1425);
+        columns.AddFor(m => m.plugIn_Version).Width(150);
+    })
+    )
+
+</div>
+<style>
+    body {
+        overflow: hidden;
+    }
+    div {
+        color: black !important;
+
+    }
+    tr{
+        font-size:20px !important;
+        color:white !important;
+        border: 1px solid black !important;
+    }
+    td{
+        color:black !important;
+    }
+</style>

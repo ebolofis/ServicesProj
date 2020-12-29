@@ -1,0 +1,67 @@
+﻿
+.h3style {
+    color: red;
+    text-align: center;
+    margin-top: 2px;
+    
+}
+.header {
+    color: white;
+    border: 1px solid black;
+    height: 100px;
+    background-color: #00468b
+}
+.hasBorder{
+    border:1px solid black;
+}
+.tac{
+    text-align:center;
+}
+.active {
+    cursor: pointer;
+    text-align: center;
+    color: darkgreen;
+}
+.inactive {
+    cursor: pointer;
+    text-align: center;
+    color: darkred;
+
+}
+.orange {
+    cursor: pointer;
+    background-color: orangered !important;
+    background: white;
+}
+.ac{
+    text-align:center !important;
+}
+.mt1 {
+    margin-top: 1px;
+}
+.lblstyle {
+    text-align: center;
+    cursor: pointer;
+}
+
+.yellow {
+    cursor: pointer;
+    background-color: #e1ad01;
+    background: white;
+}
+.smallclock {
+    border-radius: 50px;
+    background-color: #e1ad01;
+    background: black;
+}
+
+.thstyle {
+    color: black !important;
+    background: lightblue !important
+}
+.btnstyle {
+    background-color: #e1ad01;
+    height: 25px;
+    width: 40px;
+    border-radius: 50px;
+}

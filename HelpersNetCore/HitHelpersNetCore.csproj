@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Models\PmsDBModels\ProtelHotelsModel.cs~RF943e8ec.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="CsvHelper" Version="18.0.0" />
+    <PackageReference Include="FluentFTP" Version="33.0.3" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.14" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.7.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+</Project>

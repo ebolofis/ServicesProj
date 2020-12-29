@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Dapper.SimpleCRUD" Version="2.2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Enums\" />
+    <Folder Include="Ermis\DTOs\" />
+    <Folder Include="Ermis\Models\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Protel\Models\" />
+    <Folder Include="WebPos\DTOs\" />
+    <Folder Include="WebPos\Models\" />
+  </ItemGroup>
+
+</Project>

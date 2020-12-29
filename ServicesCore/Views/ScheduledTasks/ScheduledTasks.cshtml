@@ -1,0 +1,564 @@
+﻿@page
+@using HitServicesCore.Models;
+@using DevExtreme.AspNet.Mvc;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<SchedulerServiceModel> scheduledTasks = ViewBag.ScheduledTasks;
+    var cronMin = "" as string; var cronHour = "" as string; var cronDay = "" as string; var CronMonth = "" as string;
+    var CronWeekday = "" as string; string cron = "*****"; bool IsDisabled = true;
+    List<int> Minutes = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59 };
+    List<int> Hours = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
+    List<int> Days = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
+    List<string> Months = new List<string>() { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+    List<string> Weekdays = new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+    cron = cronMin + cronHour + cronDay + CronMonth + CronWeekday; string ScheduledJob = ViewBag.ScheduledJob;
+    string minute; string weekday; string hour; string day; string month; int xminute; int i = 0; int j = 1;
+    String[] arr = ViewBag.currentTime; var temp = "" as string;
+    var occurences = ViewBag.occurences;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scheduled Tasks</title>
+    <link rel="stylesheet" href="~/css/Flex.css" />
+    <link rel="stylesheet" href="~/css/ScheduledTasks/ScheduledTasks.css">
+</head>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+<body class="bstyle">
+    <div class="custom-flex-row custom-flex-100 header h1style " style=" background-color: #00468b; margin-bottom: 5px;">
+        <div class="custom-flex-100 custom-flex-center">
+            <h1 style="border:none;"> Scheduled Tasks </h1>
+        </div>
+        <label class="lblstyle backarrow" onclick="redirectToServices()"> Back   <i class="fas fa-arrow-alt-circle-left"></i></label>
+    </div>
+    <div class="mainframe custom-flex-row custom-flex-50" style=" margin-top: 20px;">
+        <div class="taskframe">
+        </div>
+    </div>
+    <div class="mainframe custom-flex-row custom-flex-100">
+        <div class="custom-flex-100  custom-flex-center">
+            <div class="custom-flex-100  custom-flex-start">
+            </div>
+        </div>
+    </div>
+    <div class="mainframe custom-flex-row custom-flex-50">
+        <div class="taskframe">
+        </div>
+    </div>
+    <div class="mainconfiguration">
+        <div class="divider custom-flex-row custom-flex-100">
+            <div class="custom-flex-100 custom-flex-row">
+                <h2 class="custom-flex-85 custom-flex-start h2style">
+                    &nbsp Selected Job  :  &nbsp;<span style="font-size:20px;" class="bluecol">@ScheduledJob</span>
+                    &nbsp;  &nbsp;
+                </h2>
+                <button class="button custom-flex-10 custom-flex-center" data-bind="click:ScheduledTasksHandler.saveScheduledTask"><i class="fas fa-save"> &nbsp; Save</i></button>
+            </div>
+        </div>
+        <div class="custom-flex-row rowstyle">
+            <div class="custom-flex-column custom-full-width section">
+                <label class="labelstyling">Minutes</label>
+                <div class="custom-flex-row custom-flex-25">
+                </div>
+                <div class="custom-flex-row custom-flex-100">
+                    <div class="custom-flex-15">
+                    </div>
+                    <form name="form_radiobuttons">
+                        <label class="container">
+                            Every Minute
+                            <input type="radio" id="Minute" name="radio" data-bind="click:  ScheduledTasksHandler.EveryMinuteSet  ">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="container">
+                            Even Minute
+                            <input type="radio" id="EvenMinute" name="radio" data-bind="click: ScheduledTasksHandler.EvenMinuteSet">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="container">
+                            <label class="radiolabels">Odd Minute</label>
+                            <input type="radio" id="OddMinute" name="radio" data-bind="click: ScheduledTasksHandler.OddMinute">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="container">
+                            <input type="radio" id="EXM" name="radio" data-bind="click: ScheduledTasksHandler.EveryXMinute" onclick="enableEveryXMinute()">
+                            <span class="checkmark"></span>
+                        </label>
+                        <div class="radiolabels ml40" style=" margin-top: -15px;">  Every  <input id="xminute" class="h30" onchange="ScheduledTasksHandler.EveryXMinute()" disabled data-bind="click: ScheduledTasksHandler.EveryXMinute" type="number" style="" min="0" max="59" /> mins</div>
+                    </form>
+                    <div>
+                        Manual Select
+                        <div class="mb10"></div>
+                        <div class="multiselect" id="minutes" multiple="multiple" data-target="multi-0">
+                            <div class="title noselect">
+                                <span id="manualminute" class="text"></span>
+                                <span class="close-icon">&times;</span>
+                                <span class="expand-icon">&plus;</span>
+                            </div>
+                            <div class="cont">
+                                @foreach (int m in Minutes)
+                                {<option data-bind="click: ScheduledTasksHandler.ManualMinuteSet" value=@m>@m</option>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="custom-flex-column custom-full-width section">
+                <label class="labelstyling">Hours</label>
+                <div class="custom-flex-row custom-flex-25">
+                </div>
+                <div class="custom-flex-row custom-flex-100">
+                    <div class="custom-flex-15">
+                    </div>
+                    <div>
+                        <form name="form_radiobuttons">
+                            <label class="container">
+                                Every Hour
+                                <input type="radio" id="Hour" name="radio" data-bind="click:  ScheduledTasksHandler.EveryHour">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                Even Hour
+                                <input type="radio" id="EvenHour" name="radio" data-bind="click: ScheduledTasksHandler.EvenHour">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                <label class="radiolabels">Odd Hour</label>
+                                <input type="radio" id="OddHour" name="radio" data-bind="click: ScheduledTasksHandler.OddHour">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                <input type="radio" id="EXH" name="radio" data-bind="click: ScheduledTasksHandler.EveryXHour" onclick="enableEveryXHour()">
+                                <span class="checkmark"></span>
+                            </label>
+                            <div class="radiolabels ml40" style=" margin-top: -15px;">  Every  <input id="xhour" class="h30" onchange="ScheduledTasksHandler.EveryXHour()" disabled data-bind="click: ScheduledTasksHandler.EveryXHour" type="number" style="" min="0" max="23" /> hours</div>
+                        </form>
+                    </div>
+                    <div>
+                        <div>
+                            Manual Select
+                            <div class="mb10"></div>
+                            <div class="multiselect" id="hours" multiple="multiple" data-target="multi-0">
+                                <div class="title noselect">
+                                    <span id="manualhour" class="text"></span>
+                                    <span class="close-icon">&times;</span>
+                                    <span class="expand-icon">&plus;</span>
+                                </div>
+                                <div class="cont">
+                                    @foreach (int h in Hours)
+                                    {
+                                        <option data-bind="click: ScheduledTasksHandler.ManualHourSet" value=@h>@h</option>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-flex-column custom-full-width section">
+                <label class="labelstyling">Days</label>
+                <div class="custom-flex-row custom-flex-25">
+                </div>
+                <div class="custom-flex-row custom-flex-100">
+                    <div class="custom-flex-15">
+                    </div>
+                    <div>
+                        <form name="form_radiobuttons">
+                            <label class="container">
+                                Every Day
+                                <input type="radio" id="Day" name="radio" data-bind="click:  ScheduledTasksHandler.EveryDay  ">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                Even Day
+                                <input type="radio" id="EvenDay" name="radio" data-bind="click: ScheduledTasksHandler.EvenDay">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                <label class="radiolabels">Odd Day</label>
+                                <input type="radio" id="OddDay" name="radio" data-bind="click: ScheduledTasksHandler.OddDay">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                <input type="radio" id="EXD" name="radio" data-bind="click: ScheduledTasksHandler.EveryXDay" onclick="enableEveryXDay()">
+                                <span class="checkmark"></span>
+                            </label>
+                            <div class="radiolabels ml40" style=" margin-top: -15px;">  Every  <input id="xday" class="h30" onchange="ScheduledTasksHandler.EveryXDay()" disabled data-bind="click: ScheduledTasksHandler.EveryXDay" type="number" style="" min="1" max="31" /> days</div>
+                        </form>
+                    </div>
+                    <div>
+                        Manual Select
+                        <div class="mb10"></div>
+                        <div class="multiselect" id="days" multiple="multiple" data-target="multi-0">
+                            <div class="title noselect">
+                                <span id="manualday" class="text"></span>
+                                <span class="close-icon">&times;</span>
+                                <span class="expand-icon">&plus;</span>
+                            </div>
+                            <div class="cont">
+                                @foreach (int h in Hours)
+                                {
+                                    <option data-bind="click: ScheduledTasksHandler.ManualDaySet" value=@h>@h</option>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-row rowstyle">
+            <div class="custom-flex-column custom-full-width section">
+                <label class="labelstyling">Months</label>
+                <div class="custom-flex-row custom-flex-25">
+                </div>
+                <div class="custom-flex-row custom-flex-100">
+                    <div class="custom-flex-15">
+                    </div>
+                    <div>
+                        <form name="form_radiobuttons">
+                            <label class="container">
+                                Every Month
+                                <input type="radio" id="Month" name="radio" data-bind="click:  ScheduledTasksHandler.EveryMonth">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                Even Month
+                                <input type="radio" id="EvenMonth" name="radio" data-bind="click: ScheduledTasksHandler.EvenMonth">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                <label class="radiolabels">Odd Month</label>
+                                <input type="radio" id="OddMonth" name="radio" data-bind="click: ScheduledTasksHandler.OddMonth">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                <input type="radio" id="EXMo" name="radio" data-bind="click: ScheduledTasksHandler.EveryXMonth" onclick="enableEveryXMonth()">
+                                <span class="checkmark"></span>
+                            </label>
+                            <div class="radiolabels ml40" style=" margin-top: -15px;">  Every  <input id="xmonth" class="h30" onchange="ScheduledTasksHandler.EveryXMonth()" disabled data-bind="click: ScheduledTasksHandler.EveryXMonth" type="number" style="" min="1" max="12" /> months</div>
+                        </form>
+                    </div>
+                    <div>
+                        Manual Select
+                        <div class="mb10"></div>
+                        <div class="multiselect" id="months" multiple="multiple" data-target="multi-0">
+                            <div class="title noselect">
+                                <span id="manualmonth" class="text"></span>
+                                <span class="close-icon">&times;</span>
+                                <span class="expand-icon">&plus;</span>
+                            </div>
+                            <div class="cont">
+                                @foreach (string m in Months)
+                                {<option data-bind="click: ScheduledTasksHandler.ManualMonthSet" value=@j>@m</option>
+                                    j++;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-flex-column custom-full-width section">
+                <label class="labelstyling">Weekdays</label>
+                <div class="custom-flex-row custom-flex-25">
+                </div>
+                <div class="custom-flex-row custom-flex-100">
+                    <div class="custom-flex-15">
+                    </div>
+                    <div>
+                        <form name="form_radiobuttons">
+                            <label class="container">
+                                Every Weekday
+                                <input type="radio" id="Weekday" name="radio" data-bind="click:  ScheduledTasksHandler.EveryWeekday">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                Even Weekday
+                                <input type="radio" id="EvenWeekday" name="radio" data-bind="click: ScheduledTasksHandler.EvenWeekday">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                <label class="radiolabels">Odd Weekday</label>
+                                <input type="radio" id="OddWeekday" name="radio" data-bind="click: ScheduledTasksHandler.OddWeekday">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">
+                                <input type="radio" id="EXW" name="radio" data-bind="click: ScheduledTasksHandler.EveryXWeekday" onclick="enableEveryXWeekday()">
+                                <span class="checkmark"></span>
+                            </label>
+                            <div class="radiolabels ml40" style=" margin-top: -15px;" data-bind="click: ScheduledTasksHandler.EveryXWeekday" onchange="ScheduledTasksHandler.EveryXWeekday()" style=" font-size:20px;">  Every  <input id="xweekday" class="h30" disabled data-bind="click: ScheduledTasksHandler.EveryXWeekday" type="number" style="" min="1" max="12" /> weekdays</div>
+                        </form>
+                    </div>
+                    <div>
+                        Manual Select
+                        <div class="mb10"></div>
+                        <div class="multiselect" id="weekdays" multiple="multiple" data-target="multi-0">
+                            <div class="title noselect">
+                                <span id="manualweekday" class="text"></span>
+                                <span class="close-icon">&times;</span>
+                                <span class="expand-icon">&plus;</span>
+                            </div>
+                            <div class="cont">
+                                @foreach (string w in Weekdays)
+                                {<option data-bind="click: ScheduledTasksHandler.ManualWeekdaySet" value=@i>@w</option>
+                                    i++;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-flex-column custom-full-width section">
+                <label class="labelstyling">Occurences</label>
+                <div class="occurences">
+                    @if (occurences != null)
+                    {
+                        @foreach (string occ in occurences)
+                        {
+                            @Html.Label(occ);
+                            <br>
+                        }
+                    }
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:35px;"></div>
+        <div class="custom-flex-row custom-flex-100">
+            <div class="custom-flew-column custom-flex-50 " style="border: 1px solid #4CAF50;">
+                <h5 class="h5style custom-flex-center" style="background-color: #006400;">  Time To Be Saved &nbsp; </h5>
+                <h1 class="custom-flex-center hstyle" style="background-color: #4CAF50;" data-bind="text:ScheduledTasksHandler.evaluateState">&nbsp; &nbsp;</h1>
+            </div>
+            <div class="custom-flew-column custom-flex-50" style="border: 1px solid #00468b;">
+                <h5 class="h5style custom-flex-center" style="background: #e1ad01;">
+                    &nbsp; Current  Time &nbsp; </i>
+                </h5>
+                <h1 class="custom-flex-center hstyle">     @ViewBag.schedulerDescr </h1>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+
+<script>
+        Array.prototype.search = function (elem) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == elem) return i;
+            }
+            return -1;
+        };
+
+        var Multiselect = function (selector) {
+            if (!$(selector)) {
+                console.error("ERROR: Element %s does not exist.", selector);
+                return;
+            }
+
+            this.selector = selector;
+            this.selections = [];
+
+            (function (that) {
+                that.events();
+            })(this);
+        };
+
+        Multiselect.prototype = {
+            open: function (that) {
+                var target = $(that).parent().attr("data-target");
+                if (!this.selections)
+                    this.selections = [];
+
+                $(this.selector + ".multiselect").toggleClass("active");
+            },
+
+            close: function () {
+                $(this.selector + ".multiselect").removeClass("active");
+            },
+
+            events: function () {
+                var that = this;
+
+                $(document).on("click", that.selector + ".multiselect > .title", function (e) {
+                    if (e.target.className.indexOf("close-icon") < 0) {
+                        that.open();
+                    }
+                });
+                $(document).on("click", that.selector + ".multiselect option", function (e) {
+                    var selection = $(this).attr("value");
+                    var target = $(this).parent().parent().attr("data-target");
+                    var io = that.selections.search(selection);
+
+                    if (io < 0) that.selections.push(selection);
+                    else that.selections.splice(io, 1);
+
+                    that.selectionStatus();
+                    that.setSelectionsString();
+                });
+                $(document).on("click", that.selector + ".multiselect > .title > .close-icon", function (e) {
+                    that.clearSelections();
+                });
+                $(document).click(function (e) {
+                    if (e.target.className.indexOf("title") < 0) {
+                        if (e.target.className.indexOf("text") < 0) {
+                            if (e.target.className.indexOf("-icon") < 0) {
+                                if (e.target.className.indexOf("selected") < 0 ||
+                                    e.target.localName != "option") {
+                                    that.close();
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+
+            selectionStatus: function () {
+                var obj = $(this.selector + ".multiselect");
+
+                if (this.selections.length) obj.addClass("selection");
+                else obj.removeClass("selection");
+            },
+
+            clearSelections: function () {
+                this.selections = [];
+                this.selectionStatus();
+                this.setSelectionsString();
+            },
+
+            getSelections: function () {
+                return this.selections;
+            },
+
+            setSelectionsString: function () {
+                var selects = this.getSelectionsString().split(", ");
+                $(this.selector + ".multiselect > .title").attr("title", selects);
+
+                var opts = $(this.selector + ".multiselect option");
+
+                if (selects.length > 6) {
+                    var _selects = this.getSelectionsString().split(", ");
+                    _selects = _selects.splice(0, 6);
+                    $(this.selector + ".multiselect > .title > .text")
+                        .text(_selects + " [...]");
+                }
+                else {
+                    $(this.selector + ".multiselect > .title > .text")
+                        .text(selects);
+                }
+
+                for (var i = 0; i < opts.length; i++) {
+                    $(opts[i]).removeClass("selected");
+                }
+
+                for (var j = 0; j < selects.length; j++) {
+                    var select = selects[j];
+
+                    for (var i = 0; i < opts.length; i++) {
+                        if ($(opts[i]).attr("value") == select) {
+                            $(opts[i]).addClass("selected");
+                            break;
+                        }
+                    }
+                }
+            },
+
+            getSelectionsString: function () {
+                if (this.selections.length > 0)
+                    return this.selections.join(", ");
+                else return "Select";
+            },
+
+            setSelections: function (arr) {
+                if (!arr[0]) {
+                    error("ERROR: This does not look like an array.");
+                    return;
+                }
+
+                this.selections = arr;
+                this.selectionStatus();
+                this.setSelectionsString();
+            },
+        };
+            $(document).ready(function () {
+                var multi = new Multiselect("#minutes");
+                var multi = new Multiselect("#hours");
+                var multi = new Multiselect("#days");
+                var multi = new Multiselect("#months");
+                var multi = new Multiselect("#weekdays");
+
+                if ("@arr[0]" === "*") document.getElementById("Minute").checked = true;
+                if ("@arr[1]" === "*") document.getElementById("Hour").checked = true;
+                if ("@arr[2]" === "*") document.getElementById("Day").checked = true;
+                if ("@arr[3]" === "*") document.getElementById("Month").checked = true;
+                if ("@arr[4]" === "*") document.getElementById("Weekday").checked = true;
+
+                if ("@arr[0]" === "*/2") document.getElementById("EvenMinute").checked = true;
+                if ("@arr[1]" === "*/2") document.getElementById("EvenHour").checked = true;
+                if ("@arr[2]" === "*/2") document.getElementById("EvenDay").checked = true;
+                if ("@arr[3]" === "*/2") document.getElementById("EvenMonth").checked = true;
+                if ("@arr[4]" === "*/2") document.getElementById("EvenWeekday").checked = true;
+
+                if ("@arr[0]" === "1-59/2") document.getElementById("OddMinute").checked = true;
+                if ("@arr[1]" === "1-23/2") document.getElementById("OddHour").checked = true;
+                if ("@arr[2]" === "1-31/2") document.getElementById("OddDay").checked = true;
+                if ("@arr[3]" === "1-12/2") document.getElementById("OddMonth").checked = true;
+                if ("@arr[4]" === "0-6/2") document.getElementById("OddWeekday").checked = true;
+
+                if ("@arr[0].Contains("*/")" === "True") {
+                    document.getElementById("EXM").checked = true;
+                    document.getElementById("xminute").value = "@Convert.ToString(ViewBag.manualTime[0])";
+                }
+                    if ("@arr[1].Contains("*/")" === "True") {
+                        document.getElementById("EXH").checked = true;
+                        document.getElementById("xhour").value = "@Convert.ToString(ViewBag.manualTime[1])";
+                }
+
+                                 if ("@arr[2].Contains("*/")" === "True") {
+                        document.getElementById("EXD").checked = true;
+                                     document.getElementById("xday").value = "@Convert.ToString(ViewBag.manualTime[2])";
+                }
+
+                if ("@arr[3].Contains("*/")" === "True") {
+                    document.getElementById("xmonth").value = "@Convert.ToString(ViewBag.manualTime[3])";
+                                 document.getElementById("EXMo").checked = true;
+
+                 }
+
+                                        if ("@arr[4].Contains("*/")" === "True") {
+                                            document.getElementById("EXW").checked = true;
+                                            document.getElementById("xweekday").value = "@Convert.ToString(ViewBag.manualTime[4])";
+                }
+
+        });
+
+</script>
+<style>
+    .backarrow {
+        cursor: pointer;
+        text-align: center;
+        color: white;
+    }
+
+    .h5style {
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: bold;
+        width: 150px;
+        margin: 0px;
+        color: whitesmoke;
+        font-size: 12px;
+    }
+
+    .hstyle {
+        font-size: 20px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        border: none;
+        width: fit-content;
+    }
+</style>
+

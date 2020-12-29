@@ -1,0 +1,114 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
+    <UserSecretsId>b53c5e61-5a84-4141-9b56-aaf7b2af7b10</UserSecretsId>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Plugins\AADEPlugin\**" />
+      <Content Remove="Plugins\AADEPlugin\**" />
+      <EmbeddedResource Remove="Plugins\AADEPlugin\**" />
+      <None Remove="Plugins\AADEPlugin\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Config\configuration.json" />
+      <Content Remove="Config\_____settings.json" />
+      <Content Remove="Config\______configuration.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\js\sweet_alert_Izi_Toast\iziToast.min.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Dapper.SimpleCRUD" Version="2.2.0.1" />
+    <PackageReference Include="DevExpress.AspNetCore.Common" Version="20.2.3" />
+    <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.14" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.14" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
+    <PackageReference Include="knockoutjs" Version="3.5.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="NCrontab" Version="3.3.1" />
+    <PackageReference Include="NLog" Version="4.7.2" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HitCustomAnnotations\HitCustomAnnotations.csproj" />
+    <ProjectReference Include="..\HitHelpersNetCore\HitHelpersNetCore.csproj" />
+    <ProjectReference Include="..\PmsDBModels\PmsDBModels.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Config\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Config\HitServiceCore.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Config\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Config\pwss.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Config\scheduler.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Descriptors\HitServiceCoreDescriptor.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Config\NLog.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plugins\ReadMe.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ServiceScripts\CreateService.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ServiceScripts\DeleteService.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ServiceScripts\RunAsConsole.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ServiceScripts\StartService.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ServiceScripts\StopService.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IS_Services\ExportData\" />
+    <Folder Include="IS_Services\ReadCsv\" />
+    <Folder Include="IS_Services\SaveToTable\" />
+    <Folder Include="IS_Services\SqlScripts\" />
+    <PackageReference Include="DevExtreme.AspNet.Core" Version="20.2.3" />
+    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.7.1" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties DismissedDevExtremeVersion="20.2.3" TemplateFeatures="NETCORE" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

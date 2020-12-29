@@ -1,0 +1,117 @@
+{
+  "General": [
+    {
+      "Key": "CheckServiceOnScheduler",
+      "Description": "Check if all active services are enabled on hang fire. If any of them is not then add it to hang fire. Sleep time before next check is on minutes",
+      "Type": "int",
+      "DefaultValue": "15",
+      "ApiVersion": "1.0.0.0"
+    }
+  ],
+  "ConnectionStrings": [
+    {
+      "Key": "PosDBs",
+      "Description": "Connection string for POS databases.",
+      "Type": "list,db",
+      "DefaultValue": "Server=server;Database=db;User id=user;Password=password",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    },
+    {
+      "Key": "CustomDB",
+      "Description": "Custom Db Test",
+      "Type": "customdb",
+      "DefaultValue": "Server=server;Database=db;User id=user;Password=password",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    },
+    {
+      "Key": "DateTest",
+      "Description": "Testing Date.",
+      "Type": "datetime",
+      "DefaultValue": "2018-07-22",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    },
+    {
+      "Key": "ProtelDBs",
+      "Description": "Connection string for Protel databases.",
+      "Type": "list,db",
+      "DefaultValue": "Server=server;Database=db;User id=user;Password=password",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    },
+    {
+      "Key": "ProtelConfig",
+      "Description": "List of settings per hotel .",
+      "Type": "list,mpehotel",
+      "DefaultValue": "protelValue",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    },
+    {
+      "Key": "ErmisDB",
+      "Description": "Connection string for Ermis database.",
+      "Type": "list,db",
+      "DefaultValue": "Server=server;Database=db;User id=user;Password=password",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    },
+    {
+      "Key": "MainDB",
+      "Description": "Connection string for MainDB database.",
+      "Type": "maindb",
+      "DefaultValue": "Server=server;Database=db;User id=user;Password=password",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    },
+    {
+      "Key": "HitPosDB",
+      "Description": "Connection string for HitPOS database.",
+      "Type": "string",
+      "DefaultValue": "Server=server;Database=db;User id=user;Password=password",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    },
+    {
+      "Key": "DB1",
+      "Description": "Connection string for database 1.",
+      "Type": "string",
+      "DefaultValue": "Server=server;Database=db;User id=user;Password=password",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    },
+    {
+      "Key": "DB2",
+      "Description": "Connection string for database 2.",
+      "Type": "string",
+      "DefaultValue": "Server=server;Database=db;User id=user;Password=password",
+      "ApiVersion": "1.0.0.0",
+      "IsHidden": "true"
+    }
+  ],
+  "BasePaths": [
+    {
+      "Key": "ProtelPaths",
+      "Description": "Main Paths for Protel applications.",
+      "Type": "list,string",
+      "DefaultValue": "",
+      "ApiVersion": "1.0.0.0"
+    },
+    {
+      "Key": "PosPaths",
+      "Description": "Main Path for api POS applications .",
+      "Type": "list,string",
+      "DefaultValue": "",
+      "ApiVersion": "1.0.0.0"
+    },
+    {
+      "Key": "ErmisPath",
+      "Description": "Main Path for Ermis.",
+      "Type": "string",
+      "DefaultValue": "",
+      "ApiVersion": "1.0.0.0"
+    }
+
+  ]
+}

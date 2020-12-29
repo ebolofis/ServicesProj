@@ -1,0 +1,389 @@
+﻿
+.accordion {
+    background-color: #00468b;
+    color: white;
+    cursor: pointer;
+    text-transform: uppercase;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    border: 1px dotted black;
+    height: 50px;
+}
+
+.mt44 {
+    margin-top:44px;
+}
+.datestyle {
+    width: 200px;
+    height: 30px;
+    margin-top: 10px;
+    color:black;
+}
+.divstyle {
+    color: white;
+    border: 1px solid black;
+    height: 100px;
+    background-color: #00468b
+}
+.mt20 {
+    margin-top: 20px;
+}
+.b1psb {
+    border: 1px solid black;
+}
+.ml5 {
+    margin-left:5px;
+}
+.mt5 {
+    margin-top: 5px; 
+}
+.tac {
+    text-align: center;
+}
+.values {
+    height: 25px;
+}
+.bt1pxsw {
+    border-top: 1px solid white;
+}
+    /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+    .active, .accordion:hover {
+        background-color: #e1ad01;
+    }
+.cb {
+    color:black;
+}
+.br40 {
+    border-radius: 40px;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+    /*padding: 0 18px;*/
+    background-color: white;
+    display: none;
+    overflow: hidden;
+}
+
+
+.button {
+    display: inline-block;
+    min-width: 150px;
+    margin: 20px auto;
+    background: #006400;
+    color: #fefefe;
+    font-size: 1.2em;
+    /*padding: 1em;*/
+    height: 50px;
+    border-radius: 4px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+    transition: border-radius linear 0.05s, width linear 0.05s;
+}
+
+    .button:focus {
+        outline: 0;
+    }
+
+    .button.animate {
+        width: 68.1818181818px;
+        height: 68.1818181818px;
+        min-width: 0;
+        border-radius: 50%;
+        color: transparent;
+    }
+
+        .button.animate:after {
+            position: absolute;
+            content: '';
+            width: 25px;
+            height: 25px;
+            border: 4px solid #fefefe;
+            border-radius: 50%;
+            border-left-color: transparent;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            animation: spin ease-in 2.5s forwards;
+            animation-name: spin;
+            -webkit-animation-name: spin;
+            transition-timing-function: ease-in-out;
+            -webkit-transition-timing-function: ease-in-out;
+            animation-duration: 2.5s;
+            -webkit-animation-duration: 2.5s;
+            animation-fill-mode: forwards;
+            -webkit-animation-fill-mode: forwards;
+        }
+
+        .button.animate.success:before {
+            position: absolute;
+            content: '';
+            width: 25px;
+            height: 12.5px;
+            border: 4px solid #fefefe;
+            border-right: 0;
+            border-top: 0;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%) rotate(0deg) scale(0);
+            transform: translate(-50%, -50%) rotate(0deg) scale(0);
+            -webkit-animation: success ease-in 0.15s forwards;
+            animation: success ease-in 0.15s forwards;
+            animation-delay: 2.5s;
+        }
+
+        .button.animate.error {
+            position: relative;
+            -webkit-animation: vibrate ease-in 0.5s forwards;
+            animation: vibrate ease-in 0.5s forwards;
+            -webkit-animation-delay: 2.5s;
+            animation-delay: 2.5s;
+        }
+
+/* Reset Select */
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #2c3e50;
+    background-image: none;
+}
+    /* Remove IE arrow */
+    select::-ms-expand {
+        display: none;
+    }
+/* Custom Select */
+.select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #2c3e50;
+    overflow: hidden;
+    border-radius: .25em;
+}
+
+select {
+    flex: 1;
+    padding: 0 .5em;
+    color: #fff;
+    cursor: pointer;
+}
+/* Arrow */
+.select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #00468b;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+}
+/* Transition */
+.select:hover::after {
+    color: #f39c12;
+}
+
+.primary-content {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resp-textbox {
+    position: relative;
+    width: -webkit-fill-available;
+}
+.cross {
+    border-radius: 50px;
+    background-color: white;
+    color: #4CAF50 !important;
+    border: none;
+    border: none;
+}
+.min {
+    background-color: white;
+    border-radius: 50px;
+    color: darkred !important;
+    border: none;
+}
+
+    .resp-textbox > input[type=text] {
+        width: 100%;
+        padding: 5px;
+        font-size: 17px;
+        /*background-color: #0003;*/
+        border: none;
+        border-radius: 5px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25) inset;
+        /*color: #fff;*/
+    }
+
+        .resp-textbox > input[type=text]:focus {
+            outline: none;
+            box-shadow: inset 2px 5px rgba(0, 0, 0, 0.25) inset;
+        }
+
+        .resp-textbox > input[type=text]::placeholder {
+            color: #fff8;
+        }
+
+body {
+    /*padding: 10px;*/
+    overflow: auto;
+    font-size: 16px;
+    font-family: 'Space Mono', sans-serif;
+    /*text-align: center;*/
+    background-color: #eaf0ff;
+    color: #002868;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+small {
+    color: #888;
+}
+
+            .button.animate.error:before {
+                color: #fff;
+                position: absolute;
+                content: '!';
+                font-size: 1.8rem;
+                font-weight: bold;
+                text-align: center;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate(-50%, -50%) scale(0);
+                transform: translate(-50%, -50%) scale(0);
+                -webkit-animation: error ease-in 0.5s forwards;
+                animation: error ease-in 0.5s forwards;
+                animation-delay: 2.5s;
+            }
+
+@@import url(https://fonts.googleapis.com/css?family=Space+Mono);
+
+* {
+    box-sizing: border-box;
+}
+
+@@media (min-width: 780px) {
+    .wrapper {
+        width: 600px;
+        display: grid;
+        grid-template-columns: repeat(2, [col] calc(100%/2));
+        grid-auto-rows: 120px;
+        margin: 30px auto 40px;
+    }
+}
+
+
+@@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+
+    90% {
+        transform: translate(-50%, -50%) rotate(1080deg) scale(1);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
+
+@@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+
+    98% {
+        -webkit-transform: translate(-50%, -50%) rotate(1080deg) scale(1);
+    }
+
+    100% {
+        -webkit-transform: translate(-50%, -50%) rotate(1080deg) scale(0);
+    }
+}
+
+@@keyframes success {
+    from {
+        transform: translate(-50%, -50%) rotate(0) scale(0);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+    }
+}
+
+@@-webkit-keyframes success {
+    from {
+        -webkit-transform: translate(-50%, -50%) rotate(0) scale(0);
+    }
+
+    to {
+        -webkit-transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+    }
+}
+
+@@keyframes error {
+    from {
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        background-color: #f44336;
+    }
+}
+
+@@-webkit-keyframes error {
+    from {
+        -webkit-transform: translate(-50%, -50%) scale(0);
+    }
+
+    to {
+        -webkit-transform: translate(-50%, -50%) scale(1);
+        background-color: #f44336;
+    }
+}
+
+@@keyframes vibrate {
+    0%, 30%, 60%, 85%, 100% {
+        left: 0;
+        background-color: #f44336;
+    }
+
+    10%, 40%, 90%, 70% {
+        left: -2px;
+        background-color: #f44336;
+    }
+
+    20%, 50%, 80%, 95% {
+        left: 2px;
+        background-color: #f44336;
+    }
+}
+

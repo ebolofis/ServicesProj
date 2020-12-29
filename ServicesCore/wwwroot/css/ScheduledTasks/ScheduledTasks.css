@@ -1,0 +1,385 @@
+﻿.section {
+    width: 625px;
+    height: 300px;
+    border: 1px dotted dodgerblue
+}
+
+.labelstyling {
+    background-color: #00468b;
+    color: white;
+    text-align: center;
+    height: 35px;
+    border: 1px dashed black;
+    font-size: 25px;
+}
+.bstyle {
+    display: block;
+    overflow: hidden;
+}
+.rowstyle {
+    display: flex;
+    margin-left: 17px;
+}
+
+.h1style {
+    height: 100px;
+    margin-top: 2px;
+}
+.bluecol {
+    color: #DAA520;
+    border-bottom: 0.5px solid gray;
+    border-radius: 5%;
+}
+.h2style {
+    text-align: center;
+    color: black;
+    margin-top: 5px
+}
+.h30 {
+    height: 30px;
+}
+.mb10{
+    margin-top:10px;
+}
+.ml40{
+    margin-left:40px;
+}
+.occurences {
+    height: 200px;
+    overflow: auto;
+    text-align: center;
+    margin-top: 10px;
+}
+.button {
+    /*border-radius: 15px;*/
+    margin-top: 5px;
+    width: 150px;
+    height: 50px;
+    background-color: #4CAF50;
+    border: 2px solid white;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+form {
+    width:350px !important;
+}
+/* Reset Select */
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #2c3e50;
+    background-image: none;
+}
+    /* Remove IE arrow */
+    select::-ms-expand {
+        display: none;
+    }
+/* Custom Select */
+.select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #2c3e50;
+    overflow: hidden;
+    border-radius: .25em;
+}
+
+select {
+    flex: 1;
+    padding: 0 .5em;
+    color: #fff;
+    cursor: pointer;
+}
+/* Arrow */
+.select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #00468b;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+}
+/* Transition */
+.select:hover::after {
+    color: #f39c12;
+}
+
+.greenText {
+    background-color: green;
+}
+
+.blueText {
+    background-color: blue;
+}
+
+.redText {
+    background-color: red;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.multiselect {
+    width: 170px;
+    font-size: 15px;
+    padding-bottom: 4px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: 0.2s;
+    outline: none;
+    height: 40px;
+    margin-right: 25px;
+}
+
+    .multiselect:hover {
+        border: 1px solid rgba(0, 0, 0, 0.3);
+    }
+
+    .multiselect.active {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom: 1px solid transparent;
+    }
+
+    .multiselect > .title {
+        cursor: pointer;
+        height: 16px;
+        padding: 6px;
+    }
+
+        .multiselect > .title > .text {
+            max-width: 130px;
+            max-height: 25px;
+            display: block;
+            float: left;
+            overflow: hidden;
+            line-height: 1.3em;
+        }
+
+        .multiselect > .title > .expand-icon,
+        .multiselect > .title > .close-icon {
+            float: right;
+            border-radius: 50%;
+            padding: 0 4px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            transition: 0.2s;
+            display: none;
+        }
+
+    .multiselect.selection > .title > .expand-icon {
+        display: none;
+    }
+
+    .multiselect > .title > .expand-icon,
+    .multiselect.selection > .title > .close-icon {
+        display: block;
+    }
+
+    .multiselect > .title > .close-icon:hover {
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        background: rgb(203, 32, 32);
+        color: lightgray;
+    }
+
+    .multiselect > .cont {
+
+        max-height: 250px;
+        overflow: auto;
+        margin-top: 14px;
+        margin-left: -1px;
+        width: 170px;
+        transition: 0.2s;
+        position: absolute;
+        z-index: 99;
+        background: lightgray;
+        border: 1px solid black;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+h3 {
+    /*margin-top: 75px;*/
+}
+
+    .multiselect.active > .cont {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        border-top: 0;
+    }
+
+    .multiselect:hover > .cont {
+        border-top-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .multiselect.active:hover > .cont {
+        border-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .multiselect > .cont > option {
+        display: none;
+        padding: 5px;
+        cursor: pointer;
+        transition: 0.2s;
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+    }
+
+        .multiselect > .cont > option.selected {
+            background: rgb(122, 175, 233);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        .multiselect > .cont > option:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #000;
+        }
+
+    .multiselect.active > .cont > option {
+        display: block;
+    }
+
+
+
+.radiolabels {
+
+    background-color: lightgray;
+    /*color: black;*/
+    /*text-align: center;*/
+    height: 35px;
+    /*  border-bottom: 1px solid black;*/
+    font-size: 22px;
+    /*    border-radius:5px;*/
+}
+
+body {
+    border: 1px dotted #00468b;
+}
+
+h1 {
+    border: 2px solid black;
+    text-align: center;
+    color: white;
+    background-color: #00468b;
+}
+
+.mainframe {
+    /*height:1000px;*/
+    width: 1000px;
+}
+.btnstyle {
+    background-color: #e1ad01;
+    height: 30px;
+    width: 75px;
+    border-radius:50px;
+}
+.mainconfiguration {
+    margin-top: -25px;
+    border: 1px solid black;
+    height: 100%;
+    background-color: lightgray;
+}
+
+.divider {
+    margin-bottom: 25px;
+}
+
+.taskframe {
+    border: 1px solid black;
+}
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    /* Hide the browser's default radio button */
+    .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+
+
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+}
+

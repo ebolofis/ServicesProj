@@ -1,0 +1,10 @@
+﻿{
+  "MainSmtp": {
+    "smtp": "",
+    "port": "587",
+    "ssl": "1",
+    "username": "",
+    "password": "",
+    "sender": ""
+  }
+}

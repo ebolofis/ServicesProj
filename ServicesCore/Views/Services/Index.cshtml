@@ -1,0 +1,83 @@
+﻿@page
+@using HitServicesCore.Models;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<SchedulerServiceModel> scheduledTasks = ViewBag.ScheduledTasks;
+    string err = ViewBag.error;
+}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+
+<link rel="stylesheet" href="~/css/Plugins/Plugins.css">
+<link rel="stylesheet" href="~/css/Services/services.css" />
+<script src="~/js/Services/Services.js"></script>
+<div class="hasBorder">
+    <div class="custom-flex-row custom-flex-100 header">
+        <div class="custom-flex-100 custom-flex-center">
+            <h1> Services </h1>
+        </div>
+    </div>
+    <h3 class="h3style"> @err</h3>
+    <div class="custom-flex-row">
+        <table class="table-fill">
+            <thead>
+                <tr>
+                    <th class=" thstyle tac cellwidth">Name</th>
+                    <th class=" thstyle tac cellwidth">Description</th>
+                    <th class=" thstyle tac cellwidth">Active</th>
+                    <th class=" thstyle tac cellwidth">Scheduler Frequency</th>
+                    <th class=" thstyle tac cellwidth">Version</th>
+                    <th class=" thstyle tac cellwidth">Schedule Job</th>
+                    <th class=" thstyle tac cellwidth">Fire and Forget</th>
+                </tr>
+            </thead>
+            <tbody class="table-hover">
+                @foreach (SchedulerServiceModel service in scheduledTasks)
+                {
+                <tr>
+                    <td class="tac  cellwidth">
+                        <label>@Html.Raw(service.serviceName)</label>
+                    </td>
+                    <td class=" cellwidth tac" >
+                        <label>@Html.Raw(service.description)</label>
+                    </td>
+                    @if (service.isActive == true)
+                    {
+                        <td  onclick="changeStatusToInActive(this.id)" id="@service.serviceId" class=" cellwidth active tac">
+                            <i class="fas fa-check-circle"></i>
+                        </td>
+                    }
+                    else
+                    {
+                        <td  onclick="changeStatusToActive(this.id)" id="@service.serviceId" class="  cellwidth inactive tac">
+                            <i class="fas fa-ban"></i>
+                        </td>
+
+                    }
+
+                    <td class="text-left  cellwidth ac" >
+                        <label>@Html.Raw(service.schedulerDescr)</label>
+                    </td>
+
+                    <td class="text-left  cellwidth ac">
+                        <label>@Html.Raw(service.serviceVersion)</label>
+                    </td>
+                    <td class="ac">
+                        @if (service.isActive == true)
+                        {
+                            <button onclick="redirectToScheduledTasks(this.value)" value="@service.serviceId" class="btnstyle yellow"><i class="smallclock fas fa-clock"></i></button>
+                        }
+                        else
+                        {
+                            <button onclick="redirectToScheduledTasks(this.value)" value="@service.serviceId" class="btnstyle yellow"><i class="smallclock fas fa-clock"></i></button>
+                        }
+                    </td>
+                    <td class="ac">
+                        <button onclick="fireForget(this.value)" value="@service.serviceId" class="btnstyle orange">  <i class="fas fa-power-off"></i></button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+            @Html.Raw("</table>")
+            
+</div>
+</div>
